@@ -17,7 +17,6 @@ public class Matriz {
         Matriz matrizResultado = new Matriz(filas, columnas);
 
         while (nodoRecorrido != nodoCabeza && nodoRecorrido != null) {
-
             while (nodoRecorridoFila != null && nodoRecorridoFila != nodoRecorrido) {
                 Tripleta tripleta = nodoRecorridoFila.getT();
 
@@ -28,10 +27,8 @@ public class Matriz {
                 Tripleta t = new Tripleta(fila, columna, valor);
 
                 matrizResultado.insertar(t);
-
                 nodoRecorridoFila = nodoRecorridoFila.getLigaF();
             }
-
             nodoRecorrido = (NodoDoble) nodoRecorrido.getT().getV();
             nodoRecorridoFila = nodoRecorrido.getLigaF();
         }
@@ -138,7 +135,6 @@ public class Matriz {
         NodoDoble nodoRecorridoN = nodoCabezaN.getLigaF();
 
         while (nodoRecorridoM != null && nodoRecorridoN != null && nodoRecorridoN != nodoCabezaN && nodoRecorridoM != nodoCabezaM) {
-            System.out.println("adentro");
             if (nodoRecorridoN.getT().getC() > nodoRecorridoM.getT().getC()) {
                 Tripleta t = nodoRecorridoM.getT();
                 t.setF(n);
@@ -161,6 +157,31 @@ public class Matriz {
                 nodoRecorridoM = nodoRecorridoM.getLigaF();
             }
         } 
+    }
+
+    public void multiplicarFilaPorEscalar(int lambda, int fila) {
+        NodoDoble nodoCabeza = getNodoCabezaMatriz();
+        NodoDoble nodoRecorrido = (NodoDoble) nodoCabeza.getT().getV();
+
+        NodoDoble nodoCabezaFila = null;
+        NodoDoble nodoRecorridoFila = null;
+
+        while (nodoCabeza != nodoRecorrido && nodoRecorrido != null) {
+            if (nodoRecorrido.getT().getF() == fila) {
+                nodoCabezaFila = nodoRecorrido;
+                nodoRecorridoFila = nodoCabezaFila.getLigaF();
+                break;
+            }
+            nodoRecorrido = (NodoDoble) nodoRecorrido.getT().getV();
+        }
+
+        while (nodoRecorridoFila != null && nodoRecorridoFila != nodoCabezaFila) {
+            Tripleta tripleta = nodoRecorridoFila.getT();
+            int mult = (int) tripleta.getV() * lambda;
+            nodoRecorridoFila.getT().setV(mult);
+
+            nodoRecorridoFila = nodoRecorridoFila.getLigaF();
+        }
     }
 
     public static Matriz crearMatrizIdentidad(int filas) {
