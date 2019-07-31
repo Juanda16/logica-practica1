@@ -38,6 +38,74 @@ public class Matriz {
         return matrizResultado;
     }
 
+    /**
+     * Operacion elemental, intercambiar filas
+     * @param fila1 fila n
+     * @param fila2 fila m
+     */
+    public void intercambiarFilas(int fila1, int fila2) {
+        if (fila2 < fila1) {
+            int temp = fila2;
+            fila2 = fila1;
+            fila1 = temp;
+        }
+
+        NodoDoble ant1 = null;
+        NodoDoble ant2 = null;
+
+        NodoDoble nodoCabeza = getNodoCabezaMatriz();
+        NodoDoble pasado = (NodoDoble) nodoCabeza;
+        NodoDoble presente = (NodoDoble) pasado.getT().getV();
+
+        while (presente != nodoCabeza && presente != null) {
+            if (presente.getT().getF() == fila1) {
+                ant1 = pasado;
+            }
+            if (presente.getT().getF() == fila2) {
+                ant2 = pasado;
+            }
+            pasado = (NodoDoble) presente;
+            presente = (NodoDoble) presente.getT().getV();
+        }
+
+        NodoDoble actual1 = (NodoDoble) ant1.getT().getV(),
+                    actual2 = (NodoDoble) ant2.getT().getV(),
+                    siguiente1 = (NodoDoble) actual1.getT().getV(),
+                    siguiente2 = (NodoDoble) actual2.getT().getV();
+
+        
+        actual1.getT().setF(fila2);
+        actual2.getT().setF(fila1);
+
+        int diferencia = (fila1 - fila2);
+        diferencia = diferencia > 0 ? diferencia : (diferencia * -1);
+
+        if (diferencia == 1) {
+            ant1.getT().setV(actual2);
+            actual2.getT().setV(actual1);
+            actual1.getT().setV(siguiente2);
+        } else {
+            ant1.getT().setV(actual2);
+            ant2.getT().setV(actual1);
+            actual1.getT().setV(siguiente2);
+            actual2.getT().setV(siguiente1);
+        }
+
+        NodoDoble nodoRecorriFila1 = actual1.getLigaF();
+        while (nodoRecorriFila1 != actual1 && nodoRecorriFila1 != null) {
+            int fila = fila2;
+            nodoRecorriFila1.getT().setF(fila);
+            nodoRecorriFila1 = nodoRecorriFila1.getLigaF();
+        }
+
+        NodoDoble nodoRecorriFila2 = actual2.getLigaF();
+        while (nodoRecorriFila2 != actual2 && nodoRecorriFila2 != null) {
+            int fila = fila1;
+            nodoRecorriFila2.getT().setF(fila);
+            nodoRecorriFila2 = nodoRecorriFila2.getLigaF();
+        }
+    }
+
     public static Matriz crearMatrizIdentidad(int filas) {
         Matriz identidad = new Matriz(filas, filas);
         for (int i = 1; i <= filas; i++) {
