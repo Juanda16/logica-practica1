@@ -38,8 +38,13 @@ public class Matriz {
         return matrizResultado;
     }
 
-
-    
+    public static Matriz crearMatrizIdentidad(int filas) {
+        Matriz identidad = new Matriz(filas, filas);
+        for (int i = 1; i <= filas; i++) {
+            identidad.insertar(i, i, 1);
+        }
+        return identidad;
+    }
 
     /**
      * Constructor de la matriz sin elementos
