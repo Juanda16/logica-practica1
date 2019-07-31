@@ -106,6 +106,63 @@ public class Matriz {
         }
     }
 
+    public void sumarDosFilas(int m, int n) {
+        NodoDoble nodoCabeza = getNodoCabezaMatriz();
+        NodoDoble nodoRecorrido = (NodoDoble) nodoCabeza.getT().getV();
+
+        NodoDoble nodoCabezaM = null;
+        NodoDoble nodoCabezaN = null;
+
+        while (nodoCabeza != nodoRecorrido && nodoRecorrido != null) {
+            if (nodoRecorrido.getT().getF() == n) {
+                nodoCabezaN = nodoRecorrido;
+                break;
+            }
+            nodoRecorrido = (NodoDoble) nodoRecorrido.getT().getV();
+        }
+
+        nodoCabeza = getNodoCabezaMatriz();
+        nodoRecorrido = (NodoDoble) nodoCabeza.getT().getV();
+        while (nodoCabeza != nodoRecorrido && nodoRecorrido != null) {
+            if (nodoRecorrido.getT().getF() == m) {
+                nodoCabezaM = nodoRecorrido;
+                break;
+            }
+            nodoRecorrido = (NodoDoble) nodoRecorrido.getT().getV();
+        }
+
+        System.out.println(nodoCabezaM.getLigaF().getT().getC());
+        System.out.println(nodoCabezaN.getLigaF().getT().getC());
+
+        NodoDoble nodoRecorridoM = nodoCabezaM.getLigaF();
+        NodoDoble nodoRecorridoN = nodoCabezaN.getLigaF();
+
+        while (nodoRecorridoM != null && nodoRecorridoN != null && nodoRecorridoN != nodoCabezaN && nodoRecorridoM != nodoCabezaM) {
+            System.out.println("adentro");
+            if (nodoRecorridoN.getT().getC() > nodoRecorridoM.getT().getC()) {
+                Tripleta t = nodoRecorridoM.getT();
+                t.setF(n);
+                insertar(t);
+                nodoRecorridoM = nodoRecorridoM.getLigaF();
+            }
+            
+            if (nodoRecorridoM.getT().getC() > nodoRecorridoN.getT().getC()) {
+                nodoRecorridoN = nodoRecorridoN.getLigaF();
+            }
+
+            if (nodoRecorridoM.getT().getC() == nodoRecorridoN.getT().getC()) {
+                int tm = (int) nodoRecorridoM.getT().getV();
+                int tn = (int) nodoRecorridoN.getT().getV();
+                int suma = tm + tn;
+
+                nodoRecorridoN.getT().setV(suma);
+
+                nodoRecorridoN = nodoRecorridoN.getLigaF();
+                nodoRecorridoM = nodoRecorridoM.getLigaF();
+            }
+        } 
+    }
+
     public static Matriz crearMatrizIdentidad(int filas) {
         Matriz identidad = new Matriz(filas, filas);
         for (int i = 1; i <= filas; i++) {
