@@ -159,6 +159,38 @@ public class Matriz {
         } 
     }
 
+    public static boolean equals(Matriz a, Matriz b) {
+        Tripleta configA = a.getNodoCabezaMatriz().getT(),
+                 configB = b.getNodoCabezaMatriz().getT();
+        
+        if (configA.getF() != configB.getF()){
+            return false;
+        }
+
+        NodoDoble nodoCabezaA = a.getNodoCabezaMatriz(),
+                  nodoRecorridoA = (NodoDoble) nodoCabezaA.getT().getV(),
+                  nodoRecorridoFilaA = (NodoDoble) nodoCabezaA.getLigaF();
+
+        NodoDoble nodoCabezaB = b.getNodoCabezaMatriz(),
+                  nodoRecorridoB = (NodoDoble) nodoCabezaB.getT().getV(),
+                  nodoRecorridoFilaB = (NodoDoble) nodoCabezaB.getLigaF();
+
+        boolean response = true;
+        while (nodoRecorridoA != nodoCabezaA && nodoRecorridoA != null && nodoRecorridoB != nodoCabezaB && nodoRecorridoB != null && response) {
+            while (nodoRecorridoFilaA != null && nodoRecorridoFilaA != nodoRecorridoA && nodoRecorridoFilaB != null && nodoRecorridoFilaB != nodoRecorridoB) {
+                if (nodoRecorridoFilaA.getT().getV() != nodoRecorridoFilaB.getT().getV()) {
+                    response = false;
+                    break;
+                }
+                nodoRecorridoFilaA = nodoRecorridoFilaA.getLigaF();
+                nodoRecorridoFilaB = nodoRecorridoFilaA.getLigaF();
+            }
+            nodoRecorridoA = (NodoDoble) nodoRecorridoA.getT().getV();
+            nodoRecorridoB = (NodoDoble) nodoRecorridoB.getT().getV();
+        }
+        return response;
+    }
+
     public void multiplicarFilaPorEscalar(int lambda, int fila) {
         NodoDoble nodoCabeza = getNodoCabezaMatriz();
         NodoDoble nodoRecorrido = (NodoDoble) nodoCabeza.getT().getV();
