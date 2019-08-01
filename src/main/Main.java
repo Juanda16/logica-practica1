@@ -165,9 +165,12 @@ public class Main {
             + "\n" + "choice: ");
         b = read.nextInt() - 1;
 
+        Matriz c = matrices.get(a);
+        Matriz d = matrices.get(b);
+
         System.out.print("\n" + "[~] Matriz resultado: " + "\n");
         System.out.print("\n============================================================\n");
-        Matriz.multiplicar(matrices.get(a), matrices.get(b)).mostrarMatrizEnTripletaPorPantallaTexto();
+        Matriz.multiplicar(c, d).mostrarMatrizEnTripletaPorPantallaTexto();
         System.out.print("============================================================\n");
     }
 
