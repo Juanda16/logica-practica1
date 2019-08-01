@@ -128,9 +128,6 @@ public class Matriz {
             nodoRecorrido = (NodoDoble) nodoRecorrido.getT().getV();
         }
 
-        System.out.println(nodoCabezaM.getLigaF().getT().getC());
-        System.out.println(nodoCabezaN.getLigaF().getT().getC());
-
         NodoDoble nodoRecorridoM = nodoCabezaM.getLigaF();
         NodoDoble nodoRecorridoN = nodoCabezaN.getLigaF();
 
@@ -163,31 +160,36 @@ public class Matriz {
         Tripleta configA = a.getNodoCabezaMatriz().getT(),
                  configB = b.getNodoCabezaMatriz().getT();
         
-        if (configA.getF() != configB.getF()){
+        if (configA.getF() != configB.getF() && configA.getC() != configB.getC()){
             return false;
         }
 
         NodoDoble nodoCabezaA = a.getNodoCabezaMatriz(),
                   nodoRecorridoA = (NodoDoble) nodoCabezaA.getT().getV(),
-                  nodoRecorridoFilaA = (NodoDoble) nodoCabezaA.getLigaF();
+                  nodoRecorridoFilaA = (NodoDoble) nodoRecorridoA.getLigaF();
 
         NodoDoble nodoCabezaB = b.getNodoCabezaMatriz(),
                   nodoRecorridoB = (NodoDoble) nodoCabezaB.getT().getV(),
-                  nodoRecorridoFilaB = (NodoDoble) nodoCabezaB.getLigaF();
+                  nodoRecorridoFilaB = (NodoDoble) nodoRecorridoB.getLigaF();
 
         boolean response = true;
+
         while (nodoRecorridoA != nodoCabezaA && nodoRecorridoA != null && nodoRecorridoB != nodoCabezaB && nodoRecorridoB != null && response) {
-            while (nodoRecorridoFilaA != null && nodoRecorridoFilaA != nodoRecorridoA && nodoRecorridoFilaB != null && nodoRecorridoFilaB != nodoRecorridoB) {
-                if (nodoRecorridoFilaA.getT().getV() != nodoRecorridoFilaB.getT().getV()) {
+            while (nodoRecorridoFilaA != null && nodoRecorridoFilaA != nodoRecorridoA && nodoRecorridoFilaB != null && nodoRecorridoFilaB != nodoRecorridoB && response) {
+                if (nodoRecorridoFilaA.getT().getC() != nodoRecorridoFilaB.getT().getC()) {
                     response = false;
                     break;
                 }
                 nodoRecorridoFilaA = nodoRecorridoFilaA.getLigaF();
-                nodoRecorridoFilaB = nodoRecorridoFilaA.getLigaF();
+                nodoRecorridoFilaB = nodoRecorridoFilaB.getLigaF();
             }
+
             nodoRecorridoA = (NodoDoble) nodoRecorridoA.getT().getV();
             nodoRecorridoB = (NodoDoble) nodoRecorridoB.getT().getV();
+            nodoRecorridoFilaA = nodoRecorridoA.getLigaF();
+            nodoRecorridoFilaB = nodoRecorridoB.getLigaF();
         }
+
         return response;
     }
 
