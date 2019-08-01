@@ -22,6 +22,11 @@ public class Main {
         "$$ | $$ | $$ |\\$$$$$$$ | \\$$$$  |$$ |      $$ |$$$$$$$$\\      " + "\n" +
         "\\__| \\__| \\__| \\_______|  \\____/ \\__|      \\__|\\________|" + "\n";
 
+    public static final String AUTHORS =
+        "\t" + "[*] AUTHORS:" + "\n" +
+        "\t" + "[*] Brian - Cristian - Juan - Laura - Leonardo - Maria" + "\n" +
+        "============================================================";
+
     public static final String OPTIONS = 
            "\n" + "[~] Seleccione alguna opcion!"  + "\n\n"
         +  "[1] - Crear matriz."                   + "\n"
@@ -46,10 +51,13 @@ public class Main {
                     ingresarMatriz();
                     break;
                 case '2':
+                    mostrar();
                     break;
                 case '3':
+                    multiplicarMatrices();
                     break;
                 case '4':
+                    multiplicarMatrizPorEscalar();
                     break;
                 default:
                     break;
@@ -99,5 +107,85 @@ public class Main {
             tripleta = new Tripleta(fila, columna, valor);
         }
         return tripleta;
+    }
+
+    public static void mostrar() {
+        char select;
+        do {
+            System.out.print(   
+                "\n"   + "[~] Seleccione alguna opcion!"
+              + "\n"   + "[!] n = [1,2,3,4....)"
+              + "\n\n" + "[0] - Mostrar todas las matrices."
+              + "\n"   + "[n] - Mostrar la n-esimo matriz."
+              + "\n"   + "[.] - Inicio."
+              + "\n"   + "choice: ");
+            select = read.next().charAt(0);
+            switch (select) {
+                case '0':
+                    mostrarTodo();
+                    break;
+                default:
+                    int identifier = Character.getNumericValue(select);
+                    mostrarById(identifier);
+                    break;
+            }
+        } while (select != '.');
+    }
+
+    public static void mostrarTodo() {
+        for (int i = 0; i < matrices.size(); i++) {
+            System.out.print(
+                "\n" + "ID: " + (i+1) + " <<<<<" + "\n" +
+                "============================================================\n");
+            matrices.get(i).mostrarMatrizEnTripletaPorPantallaTexto();
+            System.out.print("============================================================\n");
+        }
+    }
+
+    public static void mostrarById(int identifier) {
+        try {
+            identifier--;
+            System.out.print("\n============================================================\n");
+            matrices.get(identifier).mostrarMatrizEnTripletaPorPantallaTexto();
+            System.out.print("============================================================\n");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.print("\n" + "[!] Esta matriz no existe!" + "\n");
+        }
+    }
+
+    public static void multiplicarMatrices() {
+        int a, b;
+        System.out.print(
+              "\n" + "[~] Seleccione una matriz por su ID!"
+            + "\n" + "choice: ");
+        a = read.nextInt() - 1;
+
+        System.out.print(
+              "\n" + "[~] Seleccione una matriz por su ID!"
+            + "\n" + "choice: ");
+        b = read.nextInt() - 1;
+
+        System.out.print("\n" + "[~] Matriz resultado: " + "\n");
+        System.out.print("\n============================================================\n");
+        Matriz.multiplicar(matrices.get(a), matrices.get(b)).mostrarMatrizEnTripletaPorPantallaTexto();
+        System.out.print("============================================================\n");
+    }
+
+    public static void multiplicarMatrizPorEscalar() {
+        int a, escalar;
+        System.out.print(
+              "\n" + "[~] Seleccione una matriz por su ID!"
+            + "\n" + "choice: ");
+        a = read.nextInt() - 1;
+
+        System.out.print(
+              "\n" + "[~] Ingrese el escalar!"
+            + "\n" + "choice: ");
+        escalar = read.nextInt();
+
+        System.out.print("\n" + "[~] Matriz resultado: " + "\n");
+        System.out.print("\n============================================================\n");
+        Matriz.multiplicarPorEscalar(escalar, matrices.get(a)).mostrarMatrizEnTripletaPorPantallaTexto();
+        System.out.print("============================================================\n");
     }
 }
