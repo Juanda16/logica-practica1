@@ -4,40 +4,73 @@ public class Matriz {
 
     NodoDoble nodoCabezaMatriz;
 
-    public static Matriz inversa(Matriz matriz) {
-        NodoDoble nodoCabeza = matriz.getNodoCabezaMatriz();
-        Tripleta config = nodoCabeza.getT();
+    public static Matriz multiplicar(Matriz a, Matriz b) {
+        NodoDoble nodoCabezaA = a.getNodoCabezaMatriz(),
+                  nodoCabezaB = b.getNodoCabezaMatriz();
+        
+        Tripleta configA = nodoCabezaA.getT(),
+                configB = nodoCabezaB.getT();
 
-        Matriz identidad = crearMatrizIdentidad(config.getF());
+        int filasA = configA.getF(),
+            filasB = configB.getF(),
+            columnasA = configA.getC(),
+            columnasB = configB.getC();
 
-        Matriz inversa = identidad;        
-        while (!equals(matriz, identidad)) {
-
-            // lo primero, al inicio de cada iteracion, es organizar (si es posible) las filas
-            nodoCabeza = matriz.getNodoCabezaMatriz();
-            NodoDoble actual = (NodoDoble) nodoCabeza.getT().getV(),
-                      siguiente = (NodoDoble) actual.getT().getV();
-
-            while (nodoCabeza != actual && actual != null && siguiente != nodoCabeza && siguiente  != null) {
-                if (tieneMasCeros(actual, siguiente, config)) {
-                    int fila1 = actual.getT().getF(),
-                        fila2 = siguiente.getT().getF();
-                    matriz.intercambiarFilas(fila1, fila2);
-                    inversa.intercambiarFilas(fila1, fila2);
-
-                    actual = (NodoDoble) nodoCabeza.getT().getV();
-                    siguiente = (NodoDoble) actual.getT().getV();
-                } else {
-                    actual = (NodoDoble) actual.getT().getV();
-                    siguiente = (NodoDoble) actual.getT().getV();
-                }
-            }
-            // hasta aqui
-
-            matriz.mostrarMatrizEnTripletaPorPantallaTexto();
+        if (columnasA != filasB || columnasB != filasA) {
+            return null;
         }
 
-        return inversa;
+        NodoDoble nodoRecorridoA = (NodoDoble) nodoCabezaA.getT().getV();
+        NodoDoble nodoRecorridoFilaA = nodoRecorridoA.getLigaF();
+        
+        NodoDoble nodoRecorridoB = (NodoDoble) nodoCabezaB.getT().getV();
+        NodoDoble nodoRecorridoFilaB = nodoRecorridoB.getLigaF();
+        NodoDoble nodoRecorridoColumnaB = nodoRecorridoB.getLigaF();
+        
+        int suma = 0;
+        int fila = 1;
+        int columna = 1;
+        Matriz resultado = new Matriz(filasA, columnasB);
+        while (nodoRecorridoA != null && nodoRecorridoA != nodoCabezaA) {
+            while (nodoRecorridoFilaB != null && nodoRecorridoFilaB != nodoRecorridoB) {
+                while (nodoRecorridoFilaA != null && nodoRecorridoFilaA != nodoRecorridoA && nodoRecorridoColumnaB != null) {
+                    if (nodoRecorridoFilaA.getT().getC() < nodoRecorridoColumnaB.getT().getF()) {
+                        nodoRecorridoFilaA = nodoRecorridoFilaA.getLigaF();
+                    }
+                    if (nodoRecorridoFilaA.getT().getC() > nodoRecorridoColumnaB.getT().getF()) {
+                        nodoRecorridoColumnaB = nodoRecorridoColumnaB.getLigaC();
+                    }
+                    if (nodoRecorridoFilaA.getT().getC() == nodoRecorridoColumnaB.getT().getF()) {
+                        suma += ((int)nodoRecorridoFilaA.getT().getV() * (int)nodoRecorridoColumnaB.getT().getV());
+
+                        nodoRecorridoFilaA = nodoRecorridoFilaA.getLigaF();
+                        nodoRecorridoColumnaB = nodoRecorridoColumnaB.getLigaC();
+                    }
+                }
+
+                Tripleta nueva = new Tripleta(fila, columna, suma);
+                resultado.insertar(nueva);
+                suma = 0;
+
+                columna = columna + 1;
+                if (columna > columnasB) {
+                    columna = 1;
+                    fila = fila + 1;
+                }
+                nodoRecorridoFilaA = nodoRecorridoA.getLigaF();
+
+                nodoRecorridoFilaB = nodoRecorridoFilaB.getLigaF();
+                nodoRecorridoColumnaB = nodoRecorridoFilaB;
+                
+            }
+            nodoRecorridoA = (NodoDoble) nodoRecorridoA.getT().getV();
+            nodoRecorridoFilaA = nodoRecorridoA.getLigaF();
+
+            nodoRecorridoFilaB = nodoRecorridoB.getLigaF();
+            nodoRecorridoColumnaB = nodoRecorridoFilaB;
+        }
+        
+        return resultado;
     }
 
     public static Matriz multiplicarPorEscalar(int lambda, Matriz matriz) {
