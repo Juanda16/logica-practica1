@@ -35,11 +35,4 @@ public class Tripleta {
     public void setV(Object v) {
         this.v = v;
     }
-
-    public Tripleta clonar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-
-    
 }

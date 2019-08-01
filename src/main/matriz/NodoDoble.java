@@ -29,6 +29,4 @@ public class NodoDoble {
     public void setLigaF(NodoDoble ligaF) {
         this.ligaF = ligaF;
     }
-    
-    
 }
