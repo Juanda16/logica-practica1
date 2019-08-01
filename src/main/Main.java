@@ -1,9 +1,9 @@
 package main;
 
-
 import java.util.Scanner;
-import matriz.Tripleta;
-import matriz.Matriz;
+
+import main.matriz.Tripleta;
+import main.matriz.Matriz;
 
 public class Main {
 
