@@ -193,6 +193,30 @@ public class Matriz {
         return response;
     }
 
+    /**
+     * Tiene mas ceros actual que siguiente (?)
+     */
+    public static boolean tieneMasCeros(NodoDoble actual, NodoDoble siguiente, Tripleta config) {
+        boolean response = false;
+        if (cerosIzquierda(actual, config) > cerosIzquierda(siguiente, config)) {
+            response = true;
+        }
+        return response;
+    }
+
+    public static int cerosIzquierda(NodoDoble nodoCabezaFila, Tripleta config) {
+        int columnas = config.getC(),
+            columna = nodoCabezaFila.getLigaF().getT().getC(),
+            ceros = 0;
+
+        for (int i = 0; i < columnas; i++) {
+            if (i == (columna - 1)) {
+                ceros = i;
+            }
+        }
+        return ceros;
+    }
+
     public void multiplicarFilaPorEscalar(int lambda, int fila) {
         NodoDoble nodoCabeza = getNodoCabezaMatriz();
         NodoDoble nodoRecorrido = (NodoDoble) nodoCabeza.getT().getV();
