@@ -4,6 +4,42 @@ public class Matriz {
 
     NodoDoble nodoCabezaMatriz;
 
+    public static Matriz inversa(Matriz matriz) {
+        NodoDoble nodoCabeza = matriz.getNodoCabezaMatriz();
+        Tripleta config = nodoCabeza.getT();
+
+        Matriz identidad = crearMatrizIdentidad(config.getF());
+
+        Matriz inversa = identidad;        
+        while (!equals(matriz, identidad)) {
+
+            // lo primero, al inicio de cada iteracion, es organizar (si es posible) las filas
+            nodoCabeza = matriz.getNodoCabezaMatriz();
+            NodoDoble actual = (NodoDoble) nodoCabeza.getT().getV(),
+                      siguiente = (NodoDoble) actual.getT().getV();
+
+            while (nodoCabeza != actual && actual != null && siguiente != nodoCabeza && siguiente  != null) {
+                if (tieneMasCeros(actual, siguiente, config)) {
+                    int fila1 = actual.getT().getF(),
+                        fila2 = siguiente.getT().getF();
+                    matriz.intercambiarFilas(fila1, fila2);
+                    inversa.intercambiarFilas(fila1, fila2);
+
+                    actual = (NodoDoble) nodoCabeza.getT().getV();
+                    siguiente = (NodoDoble) actual.getT().getV();
+                } else {
+                    actual = (NodoDoble) actual.getT().getV();
+                    siguiente = (NodoDoble) actual.getT().getV();
+                }
+            }
+            // hasta aqui
+
+            matriz.mostrarMatrizEnTripletaPorPantallaTexto();
+        }
+
+        return inversa;
+    }
+
     public static Matriz multiplicarPorEscalar(int lambda, Matriz matriz) {
         NodoDoble nodoCabeza = matriz.getNodoCabezaMatriz();
 
