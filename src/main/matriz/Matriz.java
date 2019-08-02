@@ -1,9 +1,23 @@
+/*
+ * Define el objeto matriz.
+ */
 package main.matriz;
 
+/**
+ *
+ * @author we
+ */
 public class Matriz {
 
     NodoDoble nodoCabezaMatriz;
 
+    /**
+     * Retorna la matriz resultante despues de multiplcar la 
+     * matriz a por la matriz b.
+     * @param a matriz a
+     * @param b matriz b
+     * @return matriz resultado
+     */
     public static Matriz multiplicar(Matriz a, Matriz b) {
         NodoDoble nodoCabezaA = a.getNodoCabezaMatriz(),
                   nodoCabezaB = b.getNodoCabezaMatriz();
@@ -73,6 +87,13 @@ public class Matriz {
         return resultado;
     }
 
+    /**
+     * Retorna la matriz resultante despues de multiplcar el 
+     * escalar lambda por la matriz  matriz.
+     * @param lambda escalar entero
+     * @param matriz matriz
+     * @return matriz resultado
+     */
     public static Matriz multiplicarPorEscalar(int lambda, Matriz matriz) {
         NodoDoble nodoCabeza = matriz.getNodoCabezaMatriz();
 
@@ -105,9 +126,10 @@ public class Matriz {
     }
 
     /**
-     * Operacion elemental, intercambiar filas
-     * @param fila1 fila n
-     * @param fila2 fila m
+     * Operacion elemental, intercambiar fila 1 por 
+     * fila 2 de la matriz que lo invoque.
+     * @param fila1 fila 1
+     * @param fila2 fila 2
      */
     public void intercambiarFilas(int fila1, int fila2) {
         if (fila2 < fila1) {
@@ -172,6 +194,12 @@ public class Matriz {
         }
     }
 
+    /**
+     * Operacion elemental, suma la fila m en la fila n
+     * de la matriz que lo invoque.
+     * @param m fila 1
+     * @param n fila 2
+     */
     public void sumarDosFilas(int m, int n) {
         NodoDoble nodoCabeza = getNodoCabezaMatriz();
         NodoDoble nodoRecorrido = (NodoDoble) nodoCabeza.getT().getV();
@@ -225,6 +253,13 @@ public class Matriz {
         } 
     }
 
+    /**
+     * Retorna verdadero si la matriz a y la matriz b
+     * son iguales.
+     * @param a matriz a
+     * @param b matriz b
+     * @return true o false
+     */
     public static boolean equals(Matriz a, Matriz b) {
         Tripleta configA = a.getNodoCabezaMatriz().getT(),
                  configB = b.getNodoCabezaMatriz().getT();
@@ -263,29 +298,11 @@ public class Matriz {
     }
 
     /**
-     * Tiene mas ceros actual que siguiente (?)
+     * Multiplica lambda por la fila, 
+     * modifica la matriz que lo invoque.
+     * @param lambda escalar 
+     * @param fila fila
      */
-    public static boolean tieneMasCeros(NodoDoble actual, NodoDoble siguiente, Tripleta config) {
-        boolean response = false;
-        if (cerosIzquierda(actual, config) > cerosIzquierda(siguiente, config)) {
-            response = true;
-        }
-        return response;
-    }
-
-    public static int cerosIzquierda(NodoDoble nodoCabezaFila, Tripleta config) {
-        int columnas = config.getC(),
-            columna = nodoCabezaFila.getLigaF().getT().getC(),
-            ceros = 0;
-
-        for (int i = 0; i < columnas; i++) {
-            if (i == (columna - 1)) {
-                ceros = i;
-            }
-        }
-        return ceros;
-    }
-
     public void multiplicarFilaPorEscalar(int lambda, int fila) {
         NodoDoble nodoCabeza = getNodoCabezaMatriz();
         NodoDoble nodoRecorrido = (NodoDoble) nodoCabeza.getT().getV();
@@ -320,8 +337,7 @@ public class Matriz {
     }
 
     /**
-     * Constructor de la matriz sin elementos
-     *
+     * Constructor de la matriz sin elementos.
      * @param numeroFilas cantidad de filas de la matriz
      * @param numeroColumnas cantidad de columnas de la matriz
      */
@@ -329,35 +345,30 @@ public class Matriz {
         construyeNodosCabeza(numeroFilas, numeroColumnas);
     }
 
+    /**
+     * Construye los nodos cabeza de la matriz.
+     * @param numeroFilas cantidad de filas de la matriz
+     * @param numeroColumnas cantidad de columnas de la matriz
+     */
     private void construyeNodosCabeza(int numeroFilas, int numeroColumnas) {
         Tripleta tripletaConfiguracion = new Tripleta(numeroFilas, numeroColumnas, null);
         nodoCabezaMatriz = new NodoDoble(tripletaConfiguracion);
-
-        // Depende de las f y c
         int max = (numeroFilas > numeroColumnas) ? numeroFilas : numeroColumnas;
 
-        // Creo los nodos Cabeza de las listas de filas y columas
-        // Estas a su vez hacen parte de la lista circular de nodos cabeza
         NodoDoble ultimo = nodoCabezaMatriz;
         for (int i = 1; i <= max; i++) {
             NodoDoble nuevoNodoRegistroCabeza = new NodoDoble(new Tripleta(i, i, null));
-            // Estoy creando la referencia circular inicial para la lista de columnas(la oreja)
             nuevoNodoRegistroCabeza.setLigaC(nuevoNodoRegistroCabeza);
-            // Estoy creando la referencia circular inicial para la lista de filas(la oreja)
             nuevoNodoRegistroCabeza.setLigaF(nuevoNodoRegistroCabeza);
-            // Liga del ultimo con el nuevo
             setLigaNodoCabeza(ultimo, nuevoNodoRegistroCabeza);
-            // Este es el nuevo ultimo
             ultimo = nuevoNodoRegistroCabeza;
         }
-        // Establezco la referencia de la lista circular
         setLigaNodoCabeza(ultimo, nodoCabezaMatriz);
     }
 
     /**
      * Crea la liga en los nodos cabeza, se reutiliza el Object de la tripleta
      * del Nodo.
-     *
      * @param a
      * @param b
      */
@@ -370,8 +381,7 @@ public class Matriz {
     }
 
     /**
-     * Retorna el nodo cabeza de la matriz
-     *
+     * Retorna el nodo cabeza de la matriz.
      * @return
      */
     public NodoDoble getNodoCabezaMatriz() {
@@ -380,8 +390,7 @@ public class Matriz {
 
     /**
      * Método para ingresar los datos de un nuevo registro e insertarlos en la
-     * matriz
-     *
+     * matriz.
      * @param fila fila donde se encuentra el dato
      * @param columna columnas donde se encuentra el dato
      * @param valor valor
@@ -393,34 +402,22 @@ public class Matriz {
 
     /**
      * Método para ingresar los datos de un nuevo registro e insertarlos en la
-     * matriz
-     *
-     * @param t
+     * matriz.
+     * @param t tripleta
      */
     public void insertar(Tripleta t) {
-        // Creo el NodoDoble con los valores a ingresar
         NodoDoble nuevoNodoRegistro = new NodoDoble(t);
-
-        // Obtengo un nodo cabeza para recorrer la lista de nodos cabeza
         NodoDoble nodoCabezaDeRecorridoLocalizado = getLigaNodoCabeza(nodoCabezaMatriz);
-
-        // Buscar el nodo cabeza correspondiente a la Fila del registro que 
-        // estamos insertando y cuando lo encuentra inserta el registro en la lista
-        // de esa fila
+        
         while (nodoCabezaDeRecorridoLocalizado != nodoCabezaMatriz && nodoCabezaDeRecorridoLocalizado != null) {
             if (nodoCabezaDeRecorridoLocalizado.getT().getF() == t.getF()) {
-                // Eureka, encontre el Nodo cabeza de la fila
                 conectaPorFilas(nodoCabezaDeRecorridoLocalizado, nuevoNodoRegistro);
                 break;
             }
             nodoCabezaDeRecorridoLocalizado = getLigaNodoCabeza(nodoCabezaDeRecorridoLocalizado);
         }
 
-        // Obtengo un nodo cabeza para recorrer la lista de nodos cabeza
         nodoCabezaDeRecorridoLocalizado = getLigaNodoCabeza(nodoCabezaMatriz);
-        // Buscar el nodo cabeza correspondiente a la Columna del registro que
-        // estamos insertando y cuando lo encuentra inserta el registro en la lista
-        // por columna
         while (nodoCabezaDeRecorridoLocalizado != nodoCabezaMatriz && nodoCabezaDeRecorridoLocalizado != null) {
             if (nodoCabezaDeRecorridoLocalizado.getT().getC() == t.getC()) {
                 conectaPorColumnas(nodoCabezaDeRecorridoLocalizado, nuevoNodoRegistro);
@@ -431,8 +428,7 @@ public class Matriz {
     }
 
     /**
-     * Método para conectar un nuevo nodo por las filas
-     *
+     * Método para conectar un nuevo nodo por las filas.
      * @param nodoCabezaDeRecorridoLocalizado
      * @param nnuevo
      */
@@ -452,8 +448,7 @@ public class Matriz {
     }
 
     /**
-     * Método para conectar un nuevo nodo por las columnas
-     *
+     * Método para conectar un nuevo nodo por las columnas.
      * @param nodoCDeRecorrido
      * @param nnuevo
      */
@@ -472,12 +467,14 @@ public class Matriz {
         ultimoNodoDeColumna.setLigaC(nuevoNodoRegistro);
     }
 
+    /**
+     * Muestra la matriz por pantalla.
+     */
     public void mostrarMatrizEnTripletaPorPantallaTexto() {
-        // Obtengo la configuración de la matriz, fr y cr y la cantidadValores
         Tripleta configuracion = nodoCabezaMatriz.getT();
         int fr = configuracion.getF();
         int cr = configuracion.getC();
-        // Imprimir una línea con encabezado de las columnas
+
         System.out.print("\t");
         for (int i = 1; i <= cr; i++) {
             System.out.print(i + "\t");
@@ -486,7 +483,6 @@ public class Matriz {
 
         NodoDoble nodoRecorridoCabeza = getLigaNodoCabeza(nodoCabezaMatriz);
 
-        // Recorrido por una matriz virtual m x n
         for (int fv = 1; fv <= fr; fv++) {
             System.out.print(fv + "\t");
             if (nodoRecorridoCabeza != null && nodoRecorridoCabeza != nodoCabezaMatriz) {

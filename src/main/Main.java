@@ -1,5 +1,8 @@
+/*
+ * Aplicacion que permite la creacion y operacion de matrices. 
+ * (MATRIZ LISTA LIGADA FORMA 1)
+ */
 package main;
-
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -7,6 +10,10 @@ import java.util.Scanner;
 import main.matriz.Tripleta;
 import main.matriz.Matriz;
 
+/**
+ *
+ * @author we
+ */
 public class Main {
 
     private static Scanner read = new Scanner(System.in);
@@ -23,9 +30,10 @@ public class Main {
         "\\__| \\__| \\__| \\_______|  \\____/ \\__|      \\__|\\________|" + "\n";
 
     public static final String AUTHORS =
+        "\n" +
         "\t" + "[*] AUTHORS:" + "\n" +
         "\t" + "[*] Brian - Cristian - Juan - Laura - Leonardo - Maria" + "\n" +
-        "============================================================";
+        "==============================================================";
 
     public static final String OPTIONS = 
            "\n" + "[~] Seleccione alguna opcion!"  + "\n\n"
@@ -40,8 +48,13 @@ public class Main {
         index();
     }
 
+    /**
+     * Inicia la vista (formulario) principal
+     * para la interacción con el usuario.
+     */
     private static void index() {
         System.out.print(LOGO);
+        System.out.print(AUTHORS);
         char select;
         do {
             System.out.print(OPTIONS);
@@ -65,6 +78,10 @@ public class Main {
         } while (select != '.');
     }
 
+    /**
+     * Inicia la vista (formulario) para la
+     * creacrion de matrices.
+     */
     public static void ingresarMatriz() {
         int filas, columnas;
 
@@ -109,6 +126,10 @@ public class Main {
         return tripleta;
     }
 
+    /**
+     * Inicia la vista (formulario)
+     * para mostrar las matrices.
+     */
     public static void mostrar() {
         char select;
         do {
@@ -132,6 +153,9 @@ public class Main {
         } while (select != '.');
     }
 
+    /**
+     * Muestra todas las matrices guardadas en memoria.
+     */
     public static void mostrarTodo() {
         for (int i = 0; i < matrices.size(); i++) {
             System.out.print(
@@ -142,6 +166,9 @@ public class Main {
         }
     }
 
+    /**
+     * Muestra una matriz por su identificacion.
+     */
     public static void mostrarById(int identifier) {
         try {
             identifier--;
@@ -153,6 +180,10 @@ public class Main {
         }
     }
 
+    /**
+     * Inicia la vista (formulario) 
+     * para multiplicar dos matrices.
+     */
     public static void multiplicarMatrices() {
         int a, b;
         System.out.print(
@@ -174,6 +205,10 @@ public class Main {
         System.out.print("============================================================\n");
     }
 
+    /**
+     * Inicia la vista (formulario)
+     * para multiplicar una matriz por un escalar.
+     */
     public static void multiplicarMatrizPorEscalar() {
         int a, escalar;
         System.out.print(
