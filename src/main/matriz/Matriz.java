@@ -11,6 +11,10 @@ public class Matriz {
 
     NodoDoble nodoCabezaMatriz;
 
+    public Tripleta getConfig() {
+        return this.nodoCabezaMatriz.getT();
+    }
+
     /**
      * Retorna la matriz resultante despues de multiplcar la 
      * matriz a por la matriz b.
@@ -23,17 +27,17 @@ public class Matriz {
                   nodoCabezaB = b.getNodoCabezaMatriz();
         
         Tripleta configA = nodoCabezaA.getT(),
-                configB = nodoCabezaB.getT();
+                 configB = nodoCabezaB.getT();
 
-        int filasA = configA.getF(),
-            filasB = configB.getF(),
-            columnasA = configA.getC(),
-            columnasB = configB.getC();
+        int colA = configA.getC(),
+            filA = configA.getF(),
+            colB = configB.getC(),
+            filB = configB.getF();
 
-        if (columnasA != filasB || columnasB != filasA) {
+        if (colA != filB) {
             return null;
         }
-
+        
         NodoDoble nodoRecorridoA = (NodoDoble) nodoCabezaA.getT().getV();
         NodoDoble nodoRecorridoFilaA = nodoRecorridoA.getLigaF();
         
@@ -44,7 +48,7 @@ public class Matriz {
         int suma = 0;
         int fila = 1;
         int columna = 1;
-        Matriz resultado = new Matriz(filasA, columnasB);
+        Matriz resultado = new Matriz(filA, colB);
         while (nodoRecorridoA != null && nodoRecorridoA != nodoCabezaA) {
             while (nodoRecorridoFilaB != null && nodoRecorridoFilaB != nodoRecorridoB) {
                 while (nodoRecorridoFilaA != null && nodoRecorridoFilaA != nodoRecorridoA && nodoRecorridoColumnaB != null) {
@@ -67,7 +71,7 @@ public class Matriz {
                 suma = 0;
 
                 columna = columna + 1;
-                if (columna > columnasB) {
+                if (columna > colB) {
                     columna = 1;
                     fila = fila + 1;
                 }
